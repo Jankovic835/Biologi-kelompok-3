@@ -3,464 +3,488 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bio Tic-Tac-Toe 🔬</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Game Tic Tac Toe Sel Biologi 🧬</title>
     <style>
-        :root {
-            --bg-color: #eef9f3;
-            --board-bg: #ffffff;
-            --primary-green: #2d6a4f;
-            --secondary-green: #40916c;
-            --text-dark: #1b4332;
-            --x-color: #3a86ff;
-            --o-color: #f77f00;
-            --border-color: #d8f3dc;
-        }
-
+        /* ==================== A. Tampilan Dasar & Latar Belakang ==================== */
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: var(--bg-color);
-            color: var(--text-dark);
-            text-align: center;
-            padding: 15px;
+            /* Latar Belakang: Biru Pastel (Aqua) */
+            background-color: #c8e6c9; 
+            color: #1e847f;
         }
 
+        /* ==================== B. Kotak Game Utama ==================== */
         .game-container {
-            width: 100%;
-            max-width: 500px;
-            background-color: var(--board-bg);
+            background-color: #ffffff; 
+            padding: 35px;
             border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25); 
+            width: 90%;
+            max-width: 500px; /* Lebih kecil, fokus pada papan */
+            text-align: center;
         }
 
-        /* === Start Screen === */
-        #start-screen h1 {
-            color: var(--primary-green);
+        h1 {
+            color: #2c3e50; /* Biru Tua */
+            margin-bottom: 5px;
         }
-        .mode-selection button {
-            width: 80%;
-            padding: 15px;
-            margin: 10px 0;
+        p {
+            color: #3498db; /* Biru Cerah */
             font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            border: 2px solid var(--primary-green);
-            background-color: transparent;
-            color: var(--primary-green);
-            border-radius: 12px;
-            transition: all 0.3s ease;
+            margin-bottom: 25px;
         }
-        .mode-selection button:hover {
-            background-color: var(--primary-green);
-            color: white;
-        }
-        .player-inputs input {
-            width: 70%;
+
+        /* ==================== C. Start Screen & Tombol ==================== */
+        #name-input {
             padding: 10px;
-            margin-bottom: 10px;
+            width: 70%;
+            max-width: 250px;
+            border: 2px solid #3498db;
             border-radius: 8px;
-            border: 1px solid var(--border-color);
-            font-family: inherit;
+            margin-bottom: 15px;
+        }
+        .action-button {
+            background-color: #1abc9c; /* Hijau Turquoise */
+            color: white;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            border: none;
+            transition: background-color 0.3s;
+            margin: 5px;
+            font-weight: bold;
+        }
+        .action-button:hover {
+            background-color: #16a085;
+        }
+        #view-ranking-button {
+            background-color: #e74c3c; /* Merah Pastel */
+        }
+        #view-ranking-button:hover {
+            background-color: #c0392b;
         }
 
-        /* === Game Screen === */
-        #game-screen {
-            display: none;
-        }
-
-        #turn-display {
-            font-size: 1.5em;
-            font-weight: 600;
-            color: var(--secondary-green);
-            margin-bottom: 20px;
-            min-height: 30px;
-        }
-
-        .board {
+        /* ==================== D. Papan Game (Tic Tac Toe) ==================== */
+        #board {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            gap: 10px;
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-            aspect-ratio: 1 / 1;
+            gap: 5px;
+            margin: 20px auto;
+            max-width: 300px;
+            border: 3px solid #2c3e50;
+            border-radius: 10px;
         }
-
         .cell {
-            background-color: var(--bg-color);
-            border-radius: 10px;
+            background-color: #ecf0f1; /* Abu Muda */
+            width: 100px;
+            height: 100px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 3em;
-            font-weight: 700;
+            font-size: 3.5em;
+            font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.1s;
         }
-        .cell:hover:not(.x):not(.o) {
-            background-color: #d8f3dc;
+        .cell:hover:empty {
+            background-color: #d1e2e4; /* Hover lebih gelap */
         }
-        .cell.x { color: var(--x-color); }
-        .cell.o { color: var(--o-color); }
 
-        #game-status {
+        /* Teks Status */
+        #status-text {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        /* ==================== E. Gaya Hasil & Ranking ==================== */
+        #result-screen {
+            display: none;
             margin-top: 20px;
-            font-size: 1.2em;
-            font-weight: 600;
-            min-height: 30px;
-            color: var(--primary-green);
+        }
+        #final-score {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin: 10px 0;
+            font-weight: 700;
         }
 
-        .action-buttons button {
-             padding: 10px 20px;
-             margin: 5px;
-             font-size: 1em;
-             cursor: pointer;
-             border: none;
-             border-radius: 8px;
-             background-color: var(--secondary-green);
-             color: white;
-             transition: background-color 0.2s;
-        }
-        .action-buttons button:hover {
-            background-color: var(--primary-green);
-        }
-
-        /* === Quiz Modal === */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+        /* Gaya Tabel Ranking */
+        #ranking-table {
             width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            margin-top: 30px;
+            border-collapse: collapse;
+            font-size: 0.95em;
         }
-        .modal-overlay.visible {
-            opacity: 1;
-            pointer-events: auto;
+        #ranking-table th, #ranking-table td {
+            border: 1px solid #bdc3c7;
+            padding: 10px;
+            color: #2c3e50;
         }
-
-        .modal-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
+        #ranking-table th {
+            background-color: #3498db; /* Biru Header */
+            color: white;
         }
-        .modal-overlay.visible .modal-content {
-            transform: scale(1);
+        #ranking-table tr:nth-child(even) {
+            background-color: #e9f5ff; 
         }
-
-        #question-text {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
-        
-        .answer-options button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            background-color: transparent;
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.2s ease;
-        }
-        .answer-options button:hover {
-            background-color: var(--bg-color);
-            border-color: var(--secondary-green);
+        .top-rank {
+            font-weight: bold;
+            background-color: #f1c40f !important; /* Kuning Emas */
+            color: #2c3e50 !important;
         }
     </style>
 </head>
 <body>
 
 <div class="game-container">
+    <h1>Tic Tac Toe Biologi 🧬</h1>
+
     <div id="start-screen">
-        <h1>Bio Tic-Tac-Toe 🔬</h1>
-        <p>Jawab pertanyaan biologi untuk menempatkan simbolmu!</p>
-        <div class="player-inputs">
-            <input type="text" id="p1-name" placeholder="Nama Player 1 (X)">
-            <input type="text" id="p2-name" placeholder="Nama Player 2 (O)">
-        </div>
-        <div class="mode-selection">
-            <button onclick="startGame('pvp')">👨‍🔬 vs 👩‍🔬 Player vs Player</button>
-            <button onclick="startGame('pvc')">👨‍🔬 vs 🤖 Player vs Computer</button>
-        </div>
+        <h2>Masukkan Nama Pemain</h2>
+        <input type="text" id="name-input" placeholder="Nama_Absen" maxlength="20">
+        <button id="start-button" class="action-button" onclick="startNewGame()">Mulai Main X!</button>
+        <br>
+        <button id="view-ranking-button" class="action-button" onclick="promptPassword()">Lihat Peringkat Guru 🏆</button>
     </div>
 
-    <div id="game-screen">
-        <div id="turn-display">Giliran Player X</div>
-        <div class="board">
-            <div class="cell" data-index="0"></div>
-            <div class="cell" data-index="1"></div>
-            <div class="cell" data-index="2"></div>
-            <div class="cell" data-index="3"></div>
-            <div class="cell" data-index="4"></div>
-            <div class="cell" data-index="5"></div>
-            <div class="cell" data-index="6"></div>
-            <div class="cell" data-index="7"></div>
-            <div class="cell" data-index="8"></div>
-        </div>
-        <div id="game-status">Pilih kotak untuk memulai!</div>
-        <div class="action-buttons">
-            <button id="restart-btn">Ulangi Permainan</button>
-            <button id="menu-btn">Kembali ke Menu</button>
-        </div>
+    <div id="game-play" style="display:none;">
+        <div id="status-text">Giliran: Pemain X</div>
+        <div id="board">
+            </div>
     </div>
-</div>
 
-<div class="modal-overlay" id="quiz-modal">
-    <div class="modal-content">
-        <div id="question-text">Ini adalah contoh pertanyaan.</div>
-        <div class="answer-options">
-            <button data-correct="false">Opsi A</button>
-            <button data-correct="false">Opsi B</button>
-            <button data-correct="false">Opsi C</button>
-            <button data-correct="false">Opsi D</button>
-        </div>
+    <div id="result-screen">
+        <div id="final-result-text">Hasil Game:</div>
+        <div id="final-score"></div>
+        
+        <h2>🏆 Peringkat Terbaik 🏆</h2>
+        <table id="ranking-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Nama</th>
+                    <th>Menang</th>
+                    <th>Kalah</th>
+                </tr>
+            </thead>
+            <tbody id="ranking-body">
+            </tbody>
+        </table>
+        
+        <button id="restart-button" class="action-button" onclick="resetGame()">Main Lagi!</button>
     </div>
 </div>
-
 
 <script>
-    // === Data Pertanyaan ===
-    const questions = [
-        { q: "Apa sebutan untuk 'pabrik energi' di dalam sel?", a: ["Mitokondria", "Ribosom", "Nukleus", "Vakuola"], correct: "Mitokondria" },
-        { q: "Proses di mana tumbuhan membuat makanannya sendiri disebut...", a: ["Respirasi", "Fotosintesis", "Transpirasi", "Gutasi"], correct: "Fotosintesis" },
-        { q: "Manakah dari berikut ini yang merupakan pembawa sifat genetik?", a: ["RNA", "Protein", "Lipid", "DNA"], correct: "DNA" },
-        { q: "Pembelahan sel yang menghasilkan sel gamet disebut...", a: ["Mitosis", "Meiosis", "Amitosis", "Fragmentasi"], correct: "Meiosis" },
-        { q: "Lapisan terluar pada sel tumbuhan yang kaku disebut...", a: ["Membran Sel", "Dinding Sel", "Sitoplasma", "Kloroplas"], correct: "Dinding Sel" },
-        { q: "Organisme yang dapat membuat makanannya sendiri disebut...", a: ["Heterotrof", "Autotrof", "Dekomposer", "Karnivora"], correct: "Autotrof" },
-        { q: "Enzim amilase di mulut berfungsi untuk memecah...", a: ["Protein", "Lemak", "Vitamin", "Karbohidrat"], correct: "Karbohidrat" },
-        { q: "Tulang terbesar di tubuh manusia adalah...", a: ["Tulang Kering", "Tulang Lengan", "Tulang Paha", "Tulang Rusuk"], correct: "Tulang Paha" },
-    ];
-
-    // === Variabel Game ===
-    let boardState = ["", "", "", "", "", "", "", "", ""];
-    let currentPlayer = "X";
-    let isGameActive = true;
-    let gameMode = 'pvp'; // 'pvp' or 'pvc'
-    let playerNames = { X: "Player 1", O: "Player 2" };
-    let currentCellIndex = null;
-
-    const winningConditions = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Horizontal
-        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Vertikal
-        [0, 4, 8], [2, 4, 6]  // Diagonal
-    ];
-
-    // === Elemen DOM ===
-    const startScreen = document.getElementById('start-screen');
-    const gameScreen = document.getElementById('game-screen');
-    const cells = document.querySelectorAll('.cell');
-    const turnDisplay = document.getElementById('turn-display');
-    const gameStatus = document.getElementById('game-status');
-    const quizModal = document.getElementById('quiz-modal');
-    const questionText = document.getElementById('question-text');
-    const answerButtons = document.querySelectorAll('.answer-options button');
-
-    // === Fungsi Utama ===
-    function startGame(mode) {
-        gameMode = mode;
-        const p1Name = document.getElementById('p1-name').value.trim();
-        const p2Name = document.getElementById('p2-name').value.trim();
-
-        playerNames.X = p1Name === '' ? 'Player 1' : p1Name;
-        if (mode === 'pvc') {
-            playerNames.O = 'Komputer';
-        } else {
-            playerNames.O = p2Name === '' ? 'Player 2' : p2Name;
-        }
-
-        startScreen.style.display = 'none';
-        gameScreen.style.display = 'block';
-        restartGame();
-    }
+    // Konstanta Game
+    const PLAYER_X = 'X';
+    const PLAYER_O = 'O';
+    const TEACHER_PASS = "BIOLOGI123"; // KODE GURU
     
-    function handleCellClick(event) {
-        const clickedCell = event.target;
-        const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+    // Elemen DOM
+    const boardElement = document.getElementById('board');
+    const statusTextElement = document.getElementById('status-text');
+    const startScreen = document.getElementById('start-screen');
+    const gamePlayScreen = document.getElementById('game-play');
+    const resultScreen = document.getElementById('result-screen');
+    const nameInput = document.getElementById('name-input');
+    const finalResultText = document.getElementById('final-result-text');
+    const finalScoreElement = document.getElementById('final-score');
+    const rankingBody = document.getElementById('ranking-body');
 
-        if (boardState[clickedCellIndex] !== "" || !isGameActive) {
+    // Variabel Game
+    let board = ['', '', '', '', '', '', '', '', ''];
+    let currentPlayer = PLAYER_X;
+    let isGameActive = true;
+    let playerName = '';
+    
+    // Data Ranking (Disimpan di Local Storage)
+    let rankingData = JSON.parse(localStorage.getItem('ticTacToeRanking')) || []; 
+
+    // Pola Kemenangan
+    const winConditions = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Baris
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Kolom
+        [0, 4, 8], [2, 4, 6]             // Diagonal
+    ];
+
+    // ----------------------------------------------------
+    // Fungsi Awal & Reset
+    // ----------------------------------------------------
+
+    function initializeGame() {
+        startScreen.style.display = 'block';
+        gamePlayScreen.style.display = 'none';
+        resultScreen.style.display = 'none';
+        nameInput.value = '';
+        renderBoard();
+        displayRanking();
+    }
+
+    function startNewGame() {
+        playerName = nameInput.value.trim();
+        if (playerName === "") {
+            alert("Mohon masukkan nama kamu untuk memulai!");
             return;
         }
-        
-        currentCellIndex = clickedCellIndex;
-        showQuiz();
-    }
 
-    function showQuiz() {
-        const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
-        questionText.textContent = randomQuestion.q;
-        
-        // Acak urutan jawaban
-        const shuffledAnswers = [...randomQuestion.a].sort(() => Math.random() - 0.5);
-
-        answerButtons.forEach((button, index) => {
-            button.textContent = shuffledAnswers[index];
-            button.dataset.correct = shuffledAnswers[index] === randomQuestion.correct;
-        });
-
-        quizModal.classList.add('visible');
-    }
-
-    function handleAnswer(event) {
-        const isCorrect = event.target.dataset.correct === 'true';
-        quizModal.classList.remove('visible');
-
-        if (isCorrect) {
-            gameStatus.textContent = `Jawaban Benar! ${playerNames[currentPlayer]} menempatkan '${currentPlayer}'.`;
-            placeMark(currentCellIndex);
-        } else {
-            gameStatus.textContent = `Jawaban Salah! Giliran ${playerNames[currentPlayer]} hangus.`;
-            switchPlayer();
-        }
-    }
-    
-    function placeMark(index) {
-        boardState[index] = currentPlayer;
-        cells[index].textContent = currentPlayer;
-        cells[index].classList.add(currentPlayer.toLowerCase());
-
-        if (checkResult()) return;
-
-        switchPlayer();
-    }
-    
-    function switchPlayer() {
-        currentPlayer = currentPlayer === "X" ? "O" : "X";
-        turnDisplay.textContent = `Giliran ${playerNames[currentPlayer]} (${currentPlayer})`;
-
-        if (gameMode === 'pvc' && currentPlayer === 'O' && isGameActive) {
-            gameStatus.textContent = "Komputer sedang berpikir...";
-            setTimeout(computerTurn, 1500);
-        }
-    }
-
-    function checkResult() {
-        let roundWon = false;
-        for (let i = 0; i < winningConditions.length; i++) {
-            const winCondition = winningConditions[i];
-            const a = boardState[winCondition[0]];
-            const b = boardState[winCondition[1]];
-            const c = boardState[winCondition[2]];
-            if (a === '' || b === '' || c === '') continue;
-            if (a === b && b === c) {
-                roundWon = true;
-                break;
-            }
-        }
-
-        if (roundWon) {
-            gameStatus.textContent = `🏆 Selamat! ${playerNames[currentPlayer]} menang!`;
-            isGameActive = false;
-            return true;
-        }
-
-        if (!boardState.includes("")) {
-            gameStatus.textContent = "🤝 Permainan Seri!";
-            isGameActive = false;
-            return true;
-        }
-        return false;
-    }
-
-    function restartGame() {
-        boardState = ["", "", "", "", "", "", "", "", ""];
+        board = ['', '', '', '', '', '', '', '', ''];
+        currentPlayer = PLAYER_X;
         isGameActive = true;
-        currentPlayer = "X";
-        cells.forEach(cell => {
-            cell.textContent = "";
-            cell.classList.remove('x', 'o');
-        });
-        turnDisplay.textContent = `Giliran ${playerNames[currentPlayer]} (${currentPlayer})`;
-        gameStatus.textContent = "Pilih kotak untuk memulai!";
+        
+        startScreen.style.display = 'none';
+        resultScreen.style.display = 'none';
+        gamePlayScreen.style.display = 'block';
+        
+        statusTextElement.textContent = `Giliran: ${playerName} (X)`;
+        renderBoard();
     }
     
-    function backToMenu() {
-        gameScreen.style.display = 'none';
-        startScreen.style.display = 'block';
+    function resetGame() {
+        // Kembali ke layar awal
+        initializeGame();
+    }
+
+    // ----------------------------------------------------
+    // Fungsi Rendering
+    // ----------------------------------------------------
+    
+    function renderBoard() {
+        boardElement.innerHTML = '';
+        board.forEach((cell, index) => {
+            const cellElement = document.createElement('div');
+            cellElement.classList.add('cell');
+            cellElement.textContent = cell;
+            cellElement.dataset.index = index;
+            cellElement.addEventListener('click', handlePlayerMove);
+            boardElement.appendChild(cellElement);
+        });
+    }
+
+    // ----------------------------------------------------
+    // Logika Game
+    // ----------------------------------------------------
+
+    function handlePlayerMove(event) {
+        const clickedCell = event.target;
+        const clickedIndex = parseInt(clickedCell.dataset.index);
+
+        if (board[clickedIndex] !== '' || !isGameActive || currentPlayer !== PLAYER_X) {
+            return; // Sel sudah terisi atau bukan giliran pemain
+        }
+
+        makeMove(clickedIndex, PLAYER_X);
+        
+        if (isGameActive) {
+            // Giliran Komputer setelah jeda sebentar
+            setTimeout(handleComputerMove, 700); 
+        }
+    }
+
+    function makeMove(index, player) {
+        board[index] = player;
+        renderBoard();
+
+        if (checkWin(player)) {
+            endGame(player);
+        } else if (checkDraw()) {
+            endGame(null);
+        } else {
+            currentPlayer = (player === PLAYER_X) ? PLAYER_O : PLAYER_X;
+            statusTextElement.textContent = (currentPlayer === PLAYER_X) 
+                ? `Giliran: ${playerName} (X)` 
+                : `Giliran: Komputer (O)`;
+        }
+    }
+
+    function checkWin(player) {
+        return winConditions.some(condition => {
+            return condition.every(index => {
+                return board[index] === player;
+            });
+        });
+    }
+
+    function checkDraw() {
+        return board.every(cell => cell !== '');
+    }
+
+    function endGame(winner) {
+        isGameActive = false;
+        
+        let message = '';
+        let resultType = '';
+
+        if (winner === PLAYER_X) {
+            message = `🎉 SELAMAT ${playerName}, Kamu MENANG!`;
+            resultType = 'Menang';
+        } else if (winner === PLAYER_O) {
+            message = `😭 Maaf ${playerName}, Komputer (O) MENANG.`;
+            resultType = 'Kalah';
+        } else {
+            message = `🤝 Hasil IMBANG. Tidak ada yang menang.`;
+            resultType = 'Seri';
+        }
+        
+        finalResultText.textContent = message;
+        finalScoreElement.textContent = ''; // Kosongkan, karena skor dihitung dari rekor
+        
+        saveScore(playerName, resultType);
+        showResultScreen();
     }
     
-    // === Logika AI Komputer ===
-    function computerTurn() {
-        // AI: Cari langkah untuk menang -> blok lawan -> ambil acak
-        let move = findBestMove();
+    // ----------------------------------------------------
+    // Logika Komputer (AI Sederhana)
+    // ----------------------------------------------------
 
-        if (move !== -1) {
-            gameStatus.textContent = `Komputer menjawab benar dan menempatkan 'O'.`;
-            placeMark(move);
+    function handleComputerMove() {
+        if (!isGameActive) return;
+
+        let moveIndex;
+
+        // 1. Cek apakah O bisa menang
+        moveIndex = findWinningMove(PLAYER_O);
+        if (moveIndex !== -1) {
+            makeMove(moveIndex, PLAYER_O);
+            return;
+        }
+
+        // 2. Cek apakah X bisa menang (dan blokir)
+        moveIndex = findWinningMove(PLAYER_X);
+        if (moveIndex !== -1) {
+            makeMove(moveIndex, PLAYER_O);
+            return;
+        }
+
+        // 3. Ambil Tengah (jika kosong)
+        if (board[4] === '') {
+            makeMove(4, PLAYER_O);
+            return;
+        }
+
+        // 4. Ambil Sudut (jika kosong)
+        const corners = [0, 2, 6, 8].filter(index => board[index] === '');
+        if (corners.length > 0) {
+            moveIndex = corners[Math.floor(Math.random() * corners.length)];
+            makeMove(moveIndex, PLAYER_O);
+            return;
+        }
+
+        // 5. Ambil Sisi (jika kosong)
+        const sides = [1, 3, 5, 7].filter(index => board[index] === '');
+        if (sides.length > 0) {
+            moveIndex = sides[Math.floor(Math.random() * sides.length)];
+            makeMove(moveIndex, PLAYER_O);
+            return;
         }
     }
 
-    function findBestMove() {
-        // 1. Cek jika komputer bisa menang
-        for (let i = 0; i < boardState.length; i++) {
-            if (boardState[i] === '') {
-                boardState[i] = 'O';
-                if (isWinning('O')) {
-                    boardState[i] = ''; return i;
-                }
-                boardState[i] = '';
-            }
+    function findWinningMove(player) {
+        for (const condition of winConditions) {
+            const [a, b, c] = condition;
+            
+            // Cek 2 dari 3 sel terisi oleh pemain yang sama
+            if (board[a] === player && board[b] === player && board[c] === '') return c;
+            if (board[a] === player && board[c] === player && board[b] === '') return b;
+            if (board[b] === player && board[c] === player && board[a] === '') return a;
         }
-        // 2. Cek jika pemain akan menang (dan blok)
-        for (let i = 0; i < boardState.length; i++) {
-            if (boardState[i] === '') {
-                boardState[i] = 'X';
-                if (isWinning('X')) {
-                    boardState[i] = ''; return i;
-                }
-                boardState[i] = '';
-            }
+        return -1;
+    }
+
+
+    // ----------------------------------------------------
+    // Fungsi Ranking & Hasil
+    // ----------------------------------------------------
+
+    function showResultScreen() {
+        gamePlayScreen.style.display = 'none';
+        resultScreen.style.display = 'block';
+        displayRanking();
+    }
+    
+    // Fungsi untuk Akses Guru
+    function promptPassword() {
+        const inputPass = prompt("Masukkan KODE GURU untuk melihat peringkat:");
+        if (inputPass === null) return;
+
+        if (inputPass === TEACHER_PASS) {
+            // Tampilkan layar hasil untuk ranking
+            gamePlayScreen.style.display = 'none';
+            startScreen.style.display = 'none';
+            resultScreen.style.display = 'block';
+            
+            finalResultText.textContent = 'Akses Guru: Data Peringkat';
+            finalScoreElement.textContent = ''; // Sembunyikan skor individual
+            displayRanking();
+        } else {
+            alert("❌ KODE SALAH! Anda tidak memiliki akses.");
         }
-        // 3. Ambil kotak kosong secara acak
-        let emptyCells = [];
-        boardState.forEach((cell, index) => {
-            if (cell === '') emptyCells.push(index);
+    }
+
+    function saveScore(name, result) {
+        let entry = rankingData.find(e => e.name === name);
+
+        if (!entry) {
+            entry = { name: name, wins: 0, losses: 0, draws: 0 };
+            rankingData.push(entry);
+        }
+
+        if (result === 'Menang') {
+            entry.wins += 1;
+        } else if (result === 'Kalah') {
+            entry.losses += 1;
+        } else if (result === 'Seri') {
+            entry.draws += 1;
+        }
+        
+        // Urutkan: 1. Jumlah Menang Tertinggi, 2. Jumlah Kalah Terendah
+        rankingData.sort((a, b) => {
+            if (b.wins !== a.wins) {
+                return b.wins - a.wins; 
+            }
+            return a.losses - b.losses;
         });
-        if (emptyCells.length > 0) {
-            return emptyCells[Math.floor(Math.random() * emptyCells.length)];
-        }
-        return -1; // Tidak ada gerakan
+
+        localStorage.setItem('ticTacToeRanking', JSON.stringify(rankingData));
     }
 
-    function isWinning(player) {
-         for (const condition of winningConditions) {
-            if (condition.every(index => boardState[index] === player)) {
-                return true;
+    function displayRanking() {
+        rankingBody.innerHTML = ''; 
+        
+        rankingData.forEach((entry, index) => {
+            const rank = index + 1;
+            const row = rankingBody.insertRow();
+            
+            if (rank === 1) {
+                row.classList.add('top-rank');
             }
+            
+            row.insertCell().textContent = rank;
+            row.insertCell().textContent = entry.name;
+            row.insertCell().textContent = entry.wins;
+            row.insertCell().textContent = entry.losses;
+        });
+        
+        if (rankingData.length === 0) {
+              const row = rankingBody.insertRow();
+              const cell = row.insertCell();
+              cell.colSpan = 4;
+              cell.textContent = "Belum ada pemain! Jadilah yang pertama!";
         }
-        return false;
     }
 
-
-    // === Event Listeners ===
-    cells.forEach(cell => cell.addEventListener('click', handleCellClick));
-    answerButtons.forEach(button => button.addEventListener('click', handleAnswer));
-    document.getElementById('restart-btn').addEventListener('click', restartGame);
-    document.getElementById('menu-btn').addEventListener('click', backToMenu);
-
+    // Mulai game saat halaman dimuat
+    initializeGame();
 </script>
+
 </body>
 </html>
-
