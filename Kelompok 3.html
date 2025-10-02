@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bio Tic-Tac-Toe 🔬</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #eef9f3;
+            --board-bg: #ffffff;
+            --primary-green: #2d6a4f;
+            --secondary-green: #40916c;
+            --text-dark: #1b4332;
+            --x-color: #3a86ff;
+            --o-color: #f77f00;
+            --border-color: #d8f3dc;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            text-align: center;
+            padding: 15px;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--board-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* === Start Screen === */
+        #start-screen h1 {
+            color: var(--primary-green);
+        }
+        .mode-selection button {
+            width: 80%;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid var(--primary-green);
+            background-color: transparent;
+            color: var(--primary-green);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .mode-selection button:hover {
+            background-color: var(--primary-green);
+            color: white;
+        }
+        .player-inputs input {
+            width: 70%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-family: inherit;
+        }
+
+        /* === Game Screen === */
+        #game-screen {
+            display: none;
+        }
+
+        #turn-display {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: var(--secondary-green);
+            margin-bottom: 20px;
+            min-height: 30px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            aspect-ratio: 1 / 1;
+        }
+
+        .cell {
+            background-color: var(--bg-color);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .cell:hover:not(.x):not(.o) {
+            background-color: #d8f3dc;
+        }
+        .cell.x { color: var(--x-color); }
+        .cell.o { color: var(--o-color); }
+
+        #game-status {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: 600;
+            min-height: 30px;
+            color: var(--primary-green);
+        }
+
+        .action-buttons button {
+             padding: 10px 20px;
+             margin: 5px;
+             font-size: 1em;
+             cursor: pointer;
+             border: none;
+             border-radius: 8px;
+             background-color: var(--secondary-green);
+             color: white;
+             transition: background-color 0.2s;
+        }
+        .action-buttons button:hover {
+            background-color: var(--primary-green);
+        }
+
+        /* === Quiz Modal === */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.visible {
+            opacity: 1;
+            pointer-
